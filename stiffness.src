@@ -4,7 +4,7 @@
 &PARAM EDITMASK = *
 DEF stiffness( )
 
-DECL STIFFNESS steifigkeit
+DECL STIFFNESS customStiffness
 ;FOLD INI
 
   ;FOLD BASISTECH INI
@@ -27,7 +27,7 @@ DECL STIFFNESS steifigkeit
 ;Start in control position mode
 $STIFFNESS.STRATEGY=10
 $OV_PRO=75
-;FOLD PTP StartPos  Vel= 100 % PDAT3 Tool[1]:Greifer leer Base[0];%{PE}%R 5.2.33,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:StartPos, 3:, 5:100, 7:PDAT3
+;FOLD PTP StartPos  Vel= 100 % PDAT3 Tool[2] Base[0]
 $BWDSTART = FALSE
 PDAT_ACT=PPDAT3
 FDAT_ACT=FStartPos
@@ -38,17 +38,17 @@ PTP XStartPos
 HALT
 ;Free XYZ RXRYRZ
 
-steifigkeit=$STIFFNESS
-steifigkeit.STRATEGY=20 ;Cartesian Steifigkeitsregelung
-steifigkeit.FRAMETYPE=#TOOL ;Bezugskoordinatensystem
-steifigkeit.TOOL=TOOL_DATA[2] ;Daten des Bezugskoordinatensystems
-steifigkeit.CPSTIFFNESS={x 0, y 0, z 0, a 0, b 0, c 0} ;kartesische Steifigkeit
-steifigkeit.CPDAMPING={x 0.5, y 0.5, z 0.5, a 0.5, b 0.5, c 0.5} ;kartesische Daempfung
-steifigkeit.AXISSTIFFNESS={a1 0,a2 0, a3 0, a4 0, a5 0, a6 0, e1 0} ;achsspezifische Steifigkeit
-steifigkeit.CPMAXDELTA={x 1399.0, y 1399.0, z 1399.0, a 1399.0, b 1399.0, c 1399.0}
-$STIFFNESS=steifigkeit
+customStiffness=$STIFFNESS
+customStiffness.STRATEGY=20 ;Cartesian Impedance control
+customStiffness.FRAMETYPE=#TOOL 
+customStiffness.TOOL=TOOL_DATA[2] ;Force sensor as tool
+customStiffness.CPSTIFFNESS={x 0, y 0, z 0, a 0, b 0, c 0} ;Cartesian stiffness
+customStiffness.CPDAMPING={x 0.5, y 0.5, z 0.5, a 0.5, b 0.5, c 0.5} ;Cartesian damping
+customStiffness.AXISSTIFFNESS={a1 0,a2 0, a3 0, a4 0, a5 0, a6 0, e1 0} ;Axis stiffness
+customStiffness.CPMAXDELTA={x 1399.0, y 1399.0, z 1399.0, a 1399.0, b 1399.0, c 1399.0}
+$STIFFNESS=customStiffness
 
-;FOLD PTP StartPos  Vel= 100 % PDAT3 Tool[1]:Greifer leer Base[0];%{PE}%R 5.2.33,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:StartPos, 3:, 5:100, 7:PDAT3
+;FOLD PTP StartPos  Vel= 100 % PDAT3 Tool[2] Base[0]
 $BWDSTART = FALSE
 PDAT_ACT=PPDAT3
 FDAT_ACT=FStartPos
@@ -60,18 +60,18 @@ PTP XStartPos
 HALT
 ;Stiffness no move
 
-steifigkeit=$STIFFNESS
-steifigkeit.STRATEGY=20 ;kartesische Steifigkeitsregelung
-steifigkeit.FRAMETYPE=#TOOL ;Bezugskoordinatensystem
-steifigkeit.TOOL=$tool ;Daten des Bezugskoordinatensystems (aktuelles Tool)
-steifigkeit.CPSTIFFNESS={x 5000, y 5000, z 5000, a 300, b 300, c 300} ;kartesische Steifigkeit
-steifigkeit.CPDAMPING={x 0.5, y 0.5, z 0.5, a 0.5, b 0.5, c 0.5} ;kartesische Daempfung
-steifigkeit.AXISSTIFFNESS={a1 500,a2 500, a3 500, a4 500, a5 500, a6 500, e1 500} ;achsspezifische Steifigkeit
+customStiffness=$STIFFNESS
+customStiffness.STRATEGY=20 ;Cartesian Impedance control
+customStiffness.FRAMETYPE=#TOOL 
+customStiffness.TOOL=TOOL_DATA[2] ;Force sensor as tool
+customStiffness.CPSTIFFNESS={x 5000, y 5000, z 5000, a 300, b 300, c 300} ;Cartesian stiffness
+customStiffness.CPDAMPING={x 0.5, y 0.5, z 0.5, a 0.5, b 0.5, c 0.5} ;Cartesian damping
+customStiffness.AXISSTIFFNESS={a1 500,a2 500, a3 500, a4 500, a5 500, a6 500, e1 500} ;Axis stiffness
 
-steifigkeit.CPMAXDELTA={x 1399.0, y 1399.0, z 1399.0, a 1399.0, b 1399.0, c 1399.0}
-$STIFFNESS=steifigkeit
+customStiffness.CPMAXDELTA={x 1399.0, y 1399.0, z 1399.0, a 1399.0, b 1399.0, c 1399.0}
+$STIFFNESS=customStiffness
 
-;FOLD PTP StartPos  Vel= 100 % PDAT3 Tool[1]:Greifer leer Base[0];%{PE}%R 5.2.33,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:StartPos, 3:, 5:100, 7:PDAT3
+;FOLD PTP StartPos  Vel= 100 % PDAT3 Tool[2] Base[0]
 $BWDSTART = FALSE
 PDAT_ACT=PPDAT3
 FDAT_ACT=FStartPos
@@ -84,16 +84,16 @@ HALT
 ;Z free 
 
 
-steifigkeit=$STIFFNESS
-steifigkeit.STRATEGY=20 ;kartesische Steifigkeitsregelung
-steifigkeit.FRAMETYPE=#TOOL ;Bezugskoordinatensystem
-steifigkeit.TOOL=TOOL_DATA[2] ;Daten des Bezugskoordinatensystems (No. 4 aus den gespeicherten Werkzeugen)
-steifigkeit.CPSTIFFNESS={x 1000, y 1000, z 0, a 300, b 300, c 300} ;kartesische Steifigkeit
-steifigkeit.CPDAMPING={x 0.7, y 0.7, z 0.7, a 0.7, b 0.7, c 0.7} ;kartesische Daempfung
-steifigkeit.AXISSTIFFNESS={a1 200,a2 200, a3 200, a4 200, a5 200, a6 200, e1 200} ;achsspezifische Steifigkeit
-$STIFFNESS=steifigkeit
+customStiffness=$STIFFNESS
+customStiffness.STRATEGY=20 ;Cartesian Impedance control
+customStiffness.FRAMETYPE=#TOOL 
+customStiffness.TOOL=TOOL_DATA[2] ;Force sensor as tool
+customStiffness.CPSTIFFNESS={x 1000, y 1000, z 0, a 300, b 300, c 300} ;Cartesian stiffness
+customStiffness.CPDAMPING={x 0.7, y 0.7, z 0.7, a 0.7, b 0.7, c 0.7} ;Cartesian damping
+customStiffness.AXISSTIFFNESS={a1 200,a2 200, a3 200, a4 200, a5 200, a6 200, e1 200} ;Axis stiffness
+$STIFFNESS=customStiffness
 
-;FOLD PTP StartPos  Vel= 100 % PDAT3 Tool[1]:Greifer leer Base[0];%{PE}%R 5.2.33,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:StartPos, 3:, 5:100, 7:PDAT3
+;FOLD PTP StartPos  Vel= 100 % PDAT3 Tool[2] Base[0]
 $BWDSTART = FALSE
 PDAT_ACT=PPDAT3
 FDAT_ACT=FStartPos
@@ -106,16 +106,16 @@ HALT
 ;XYZ  free 
 
 
-steifigkeit=$STIFFNESS
-steifigkeit.STRATEGY=20 ;kartesische Steifigkeitsregelung
-steifigkeit.FRAMETYPE=#TOOL ;Bezugskoordinatensystem
+customStiffness=$STIFFNESS
+customStiffness.STRATEGY=20 ;Cartesian Impednace control
+customStiffness.FRAMETYPE=#TOOL ;
 
-steifigkeit.CPSTIFFNESS={x 0, y 0, z 0, a 300, b 300, c 300} ;kartesische Steifigkeit
-steifigkeit.CPDAMPING={x 0.7, y 0.7, z 0.7, a 0.7, b 0.7, c 0.7} ;kartesische Daempfung
-steifigkeit.AXISSTIFFNESS={a1 1,a2 200, a3 200, a4 200, a5 200, a6 200, e1 200} ;achsspezifische Steifigkeit
-$STIFFNESS=steifigkeit
+customStiffness.CPSTIFFNESS={x 0, y 0, z 0, a 300, b 300, c 300} ;Cartesian impedance control
+customStiffness.CPDAMPING={x 0.7, y 0.7, z 0.7, a 0.7, b 0.7, c 0.7} ;Cartesian damping
+customStiffness.AXISSTIFFNESS={a1 1,a2 200, a3 200, a4 200, a5 200, a6 200, e1 200} ;Axis stiffness
+$STIFFNESS=customStiffness
 
-;FOLD PTP StartPos  Vel= 100 % PDAT3 Tool[1]:Greifer leer Base[0];%{PE}%R 5.2.33,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:StartPos, 3:, 5:100, 7:PDAT3
+;FOLD PTP StartPos  Vel= 100 % PDAT3 Tool[2] Base[0]
 $BWDSTART = FALSE
 PDAT_ACT=PPDAT3
 FDAT_ACT=FStartPos
@@ -127,16 +127,16 @@ PTP XStartPos
 HALT
 ;ABC Free 
 
-steifigkeit=$STIFFNESS
-steifigkeit.STRATEGY=20 ;kartesische Steifigkeitsregelung
-steifigkeit.FRAMETYPE=#TOOL ;Bezugskoordinatensystem
+customStiffness=$STIFFNESS
+customStiffness.STRATEGY=20 ;Cartesian Impedance control
+customStiffness.FRAMETYPE=#TOOL 
 
-steifigkeit.CPSTIFFNESS={x 2000, y 2000, z 2000, a 0, b 0, c 0} ;kartesische Steifigkeit
-steifigkeit.CPDAMPING={x 0.7, y 0.7, z 0.7, a 0.7, b 0.7, c 0.7} ;kartesische Daempfung
+customStiffness.CPSTIFFNESS={x 2000, y 2000, z 2000, a 0, b 0, c 0} ;Cartesian stiffness
+customStiffness.CPDAMPING={x 0.7, y 0.7, z 0.7, a 0.7, b 0.7, c 0.7} ;Cartesian damping
 
-$STIFFNESS=steifigkeit
+$STIFFNESS=customStiffness
 
-;FOLD PTP StartPos  Vel= 100 % PDAT8 Tool[1]:Greifer leer Base[0];%{PE}%R 5.2.33,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:StartPos, 3:, 5:100, 7:PDAT8
+;FOLD PTP StartPos  Vel= 100 % PDAT8 Tool[1]:Greifer leer Base[0]
 $BWDSTART = FALSE
 PDAT_ACT=PPDAT8
 FDAT_ACT=FStartPos
